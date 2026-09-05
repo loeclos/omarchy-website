@@ -1,0 +1,98 @@
+@import "tailwindcss";
+@import "@fontsource/cascadia-mono/latin-400.css";
+@import "@fontsource/cascadia-mono/latin-500.css";
+
+@theme {
+  --color-lambda-bg: #0b0b0b;
+  --color-lambda-line: #2a2a2a;
+  --color-lambda-ink: #eceee4;
+  --color-lambda-dim: #8f8f8a;
+  --color-lambda-cream: #eff1e6;
+  --color-lambda-pink: #f04df0;
+  --color-lambda-green: #1ce97c;
+  --font-lambda-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+  --font-nav-mono: "Cascadia Mono", "JetBrains Mono", ui-monospace,
+    SFMono-Regular, Menlo, Consolas, monospace;
+  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-instrument: "Instrument Sans", "Inter", ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", sans-serif;
+
+  --color-omarchy-cream: #e1e0cc;
+  --color-omarchy-bg: #000;
+}
+
+/* Film-grain noise overlay used by the hero (SVG feTurbulence, no asset fetch) */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Seamless text loop for overlong news titles (track holds 2 copies,
+   so translating -50% wraps without a visible jump). */
+@keyframes title-loop {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.title-loop-track {
+  animation: title-loop 6s linear infinite;
+}
+
+/* Inverted (concave) corner notches where the navbar meets the background.
+   Cuts two quarter-disc bites out of the container's bottom corners, so the
+   hero shows through the scoops. Corner-anchored gradients track the width /
+   height animations automatically. If a browser ignores the composite
+   keywords it falls back to `add` (fully visible = today's look). */
+.navbar-notch {
+  --notch: 16px;
+  -webkit-mask-image:
+    linear-gradient(#000, #000),
+    radial-gradient(
+      circle var(--notch) at 0 100%,
+      #000 calc(var(--notch) - 1px),
+      transparent var(--notch)
+    ),
+    radial-gradient(
+      circle var(--notch) at 100% 100%,
+      #000 calc(var(--notch) - 1px),
+      transparent var(--notch)
+    );
+  -webkit-mask-composite: xor;
+  mask-image:
+    linear-gradient(#000, #000),
+    radial-gradient(
+      circle var(--notch) at 0 100%,
+      #000 calc(var(--notch) - 1px),
+      transparent var(--notch)
+    ),
+    radial-gradient(
+      circle var(--notch) at 100% 100%,
+      #000 calc(var(--notch) - 1px),
+      transparent var(--notch)
+    );
+  mask-composite: exclude;
+}
+
+::selection {
+  background: #e1e0cc;
+  color: #060606;
+}
+
+/* Hide scrollbars everywhere while keeping scroll behavior */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
